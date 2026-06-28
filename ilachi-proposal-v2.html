@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Sirf Aapke Liye, Ilachi 🌹</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --rose:#e8789a;--gold:#f5c842;--deep:#1a0510;--dark:#140010;
+  --pink:#e05580;--softpink:#f9c8d8;--cream:#fff5f8;--purple:#9b4dbd;
+  --neonpink:#e8789a;--blush:#fde8ef;--dustypink:#d4607a;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);}
+
+/* ===== FLOATING HEARTS BG ===== */
+#heartsCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:1;}
+
+/* ===== PAGES ===== */
+.page{
+  position:fixed;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 1.2s ease;
+  overflow-y:auto;overflow-x:hidden;
+}
+.page.active{opacity:1;pointer-events:all;}
+
+/* ===== P1 PASSWORD ===== */
+#p1{background:radial-gradient(ellipse at center,#2d0a1a 0%,#1a0510 70%);}
+.lock-wrap{position:relative;z-index:2;text-align:center;padding:2rem 1.5rem;width:100%;max-width:420px;}
+.lock-icon{font-size:4rem;animation:heartbeat 1.5s ease-in-out infinite;display:block;margin-bottom:1rem;}
+@keyframes heartbeat{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+.p1-title{font-family:'Dancing Script',cursive;font-size:clamp(1.6rem,5vw,2.4rem);color:var(--neonpink);text-shadow:0 0 18px var(--neonpink),0 0 40px rgba(255,133,161,0.5);margin-bottom:.5rem;}
+.p1-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(.85rem,3vw,1rem);color:rgba(255,200,215,.75);margin-bottom:2rem;font-style:italic;}
+.pass-input{
+  width:100%;max-width:280px;padding:.9rem 1.4rem;
+  background:rgba(255,133,161,.08);border:1px solid rgba(255,133,161,.4);
+  border-radius:50px;color:#fff;font-size:1.1rem;text-align:center;
+  outline:none;letter-spacing:.3rem;font-family:'Cormorant Garamond',serif;
+  transition:all .3s;caret-color:var(--neonpink);
+}
+.pass-input::placeholder{letter-spacing:.05rem;font-size:.9rem;color:rgba(255,200,215,.4);}
+.pass-input:focus{border-color:var(--neonpink);box-shadow:0 0 22px rgba(255,133,161,.35);}
+.pass-btn{
+  margin-top:1.2rem;padding:.8rem 2.5rem;
+  background:linear-gradient(135deg,var(--neonpink),var(--purple));
+  border:none;border-radius:50px;color:#fff;font-family:'Dancing Script',cursive;
+  font-size:1.2rem;cursor:pointer;transition:all .3s;
+  box-shadow:0 4px 22px rgba(255,133,161,.45);
+}
+.pass-btn:hover{transform:scale(1.05);box-shadow:0 6px 32px rgba(255,133,161,.65);}
+.pass-error{margin-top:.9rem;color:var(--neonpink);font-family:'Cormorant Garamond',serif;font-size:.9rem;font-style:italic;min-height:1.2rem;opacity:0;transition:opacity .3s;}
+.pass-error.show{opacity:1;}
+.shake{animation:shake .5s ease;}
+@keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-8px);}40%,80%{transform:translateX(8px);}}
+.p1-hint{margin-top:1.5rem;font-family:'Cormorant Garamond',serif;font-size:.78rem;color:rgba(255,200,215,.28);font-style:italic;}
+
+/* ===== P2 PARTICLES ===== */
+#p2{background:#0e0208;}
+#particleCanvas{position:absolute;inset:0;width:100%;height:100%;}
+.p2-sub{
+  position:absolute;bottom:15%;left:50%;transform:translateX(-50%);
+  font-family:'Dancing Script',cursive;font-size:clamp(1.2rem,4vw,1.8rem);
+  color:rgba(255,182,210,.9);text-shadow:0 0 18px rgba(255,133,161,.7);
+  opacity:0;transition:opacity 2.5s ease;text-align:center;white-space:nowrap;z-index:2;
+}
+.p2-sub.show{opacity:1;}
+.skip-btn{
+  position:absolute;bottom:4%;right:5%;z-index:3;
+  font-family:'Cormorant Garamond',serif;font-size:.8rem;
+  color:rgba(255,200,215,.3);background:none;border:none;cursor:pointer;transition:color .3s;
+}
+.skip-btn:hover{color:rgba(255,200,215,.65);}
+
+/* ===== P3 REASONS ===== */
+#p3{background:radial-gradient(ellipse at top,#2e0a1c 0%,#100010 60%);}
+.p3-inner{position:relative;z-index:2;width:100%;max-width:500px;padding:3rem 1.5rem 5rem;}
+.section-title{
+  font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,5vw,2.6rem);
+  color:var(--neonpink);text-shadow:0 0 25px rgba(232,120,154,.55);
+  text-align:center;margin-bottom:.4rem;
+}
+.section-sub{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:rgba(255,200,215,.5);font-size:.9rem;margin-bottom:2.5rem;}
+.reason-card{
+  background:rgba(232,120,154,.06);border:1px solid rgba(232,120,154,.18);
+  border-radius:16px;padding:1.2rem 1.4rem;margin-bottom:1rem;
+  display:flex;align-items:flex-start;gap:.9rem;
+  transform:translateX(-30px);opacity:0;
+  transition:transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94),
+             opacity 0.8s ease;
+}
+.reason-card.visible{transform:translateX(0);opacity:1;}
+.reason-card:hover{background:rgba(232,120,154,.1);border-color:rgba(232,120,154,.35);box-shadow:0 0 20px rgba(232,120,154,.13);}
+.reason-num{font-family:'Dancing Script',cursive;font-size:2rem;color:var(--neonpink);opacity:.6;line-height:1;min-width:2rem;}
+.reason-text{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,2.5vw,1.05rem);color:rgba(255,230,238,.88);line-height:1.65;padding-top:.2rem;}
+.reason-text strong{color:var(--neonpink);font-style:italic;}
+.next-btn{
+  display:block;margin:2rem auto 0;padding:.85rem 2.8rem;
+  background:linear-gradient(135deg,var(--neonpink),var(--purple));
+  border:none;border-radius:50px;color:#fff;font-family:'Dancing Script',cursive;
+  font-size:1.25rem;cursor:pointer;transition:all .3s;
+  box-shadow:0 4px 22px rgba(255,133,161,.38);
+}
+.next-btn:hover{transform:scale(1.05);box-shadow:0 6px 32px rgba(255,133,161,.58);}
+
+/* ===== P4 GALLERY ===== */
+#p4{background:radial-gradient(ellipse at bottom,#2e0a1c 0%,#0e0210 70%);}
+.p4-inner{position:relative;z-index:2;width:100%;max-width:500px;padding:3rem 1.5rem 5rem;}
+.photo-grid{display:flex;flex-direction:column;gap:1.5rem;}
+.photo-frame{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,200,215,.15);
+  border-radius:16px;overflow:hidden;
+  transform:translateY(40px);opacity:0;
+  transition:transform 0.9s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.9s ease;
+}
+.photo-frame.visible{transform:translateY(0);opacity:1;}
+.photo-placeholder{
+  width:100%;height:240px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.photo-placeholder.large{height:320px;}
+.photo-placeholder img.bg-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;}
+.photo-placeholder .upload-overlay{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;pointer-events:none;}
+.photo-placeholder input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:3;}
+.photo-placeholder .upload-icon{font-size:2.5rem;margin-bottom:.5rem;}
+.photo-placeholder .upload-text{font-family:'Cormorant Garamond',serif;color:rgba(255,200,215,.6);font-size:.85rem;}
+.photo-caption{padding:.9rem 1.2rem;font-family:'Dancing Script',cursive;font-size:1rem;color:rgba(255,200,215,.85);text-align:center;border-top:1px solid rgba(255,200,215,.08);}
+
+/* ===== P5 LETTER ===== */
+#p5{background:radial-gradient(ellipse at center,#280818 0%,#080008 80%);}
+.p5-inner{position:relative;z-index:2;width:100%;max-width:520px;padding:3rem 1.5rem 5rem;}
+.letter-body{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.8vw,1.1rem);color:rgba(255,230,238,.88);line-height:1.9;}
+.letter-body .para{margin-bottom:1.5rem;opacity:0;transform:translateY(15px);transition:opacity 1.1s ease,transform 1.1s cubic-bezier(0.25,0.46,0.45,0.94);}
+.letter-body .para.show{opacity:1;transform:translateY(0);}
+.letter-from{font-family:'Dancing Script',cursive;font-size:1.3rem;color:var(--neonpink);text-shadow:0 0 15px rgba(232,120,154,.5);margin-top:1rem;}
+
+/* ===== P6 PROPOSAL ===== */
+#p6{background:radial-gradient(ellipse at center,#2a0a1e 0%,#080008 80%);}
+.p6-inner{position:relative;z-index:2;text-align:center;padding:2rem 1.5rem;width:100%;max-width:460px;}
+.proposal-emoji{font-size:4rem;animation:floatup 3s ease-in-out infinite;display:block;margin-bottom:1.5rem;}
+@keyframes floatup{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+.proposal-q{font-family:'Dancing Script',cursive;font-size:clamp(1.5rem,5vw,2.2rem);color:#fff;text-shadow:0 0 30px rgba(232,120,154,.7),0 0 60px rgba(232,120,154,.2);line-height:1.45;margin-bottom:2.5rem;}
+.proposal-q span{color:var(--neonpink);}
+.btn-yes{
+  display:block;width:100%;max-width:260px;margin:0 auto .9rem;
+  padding:1rem 2rem;background:linear-gradient(135deg,var(--neonpink),#a0195a);
+  border:none;border-radius:50px;color:#fff;font-family:'Dancing Script',cursive;
+  font-size:1.4rem;cursor:pointer;transition:all .3s;
+  box-shadow:0 4px 28px rgba(232,120,154,.55);
+}
+.btn-yes:hover{transform:scale(1.06);box-shadow:0 6px 38px rgba(232,120,154,.75);}
+.btn-no{
+  display:inline-block;padding:.7rem 1.8rem;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,200,215,.2);
+  border-radius:50px;color:rgba(255,200,215,.5);font-family:'Cormorant Garamond',serif;
+  font-size:1rem;cursor:pointer;transition:all .3s;
+}
+
+/* ===== P7 CELEBRATION ===== */
+#p7{background:radial-gradient(ellipse at center,#2a0a1e 0%,#0a0210 70%);}
+#celebCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.p7-inner{position:relative;z-index:2;text-align:center;padding:2rem 1.5rem;width:100%;max-width:480px;}
+.celeb-emoji{font-size:3.5rem;display:block;margin-bottom:1rem;animation:bounce .8s ease infinite alternate;}
+@keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-15px);}}
+.celeb-title{font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,6vw,2.8rem);color:var(--neonpink);text-shadow:0 0 30px rgba(255,133,161,.75),0 0 70px rgba(255,133,161,.3);margin-bottom:1rem;}
+.celeb-msg{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,2.5vw,1.1rem);color:rgba(255,230,238,.88);line-height:1.85;margin-bottom:1.5rem;font-style:italic;}
+.celeb-final{font-family:'Dancing Script',cursive;font-size:clamp(1.2rem,4vw,1.6rem);color:var(--gold);text-shadow:0 0 20px rgba(245,200,66,.55);}
+
+/* ===== PETALS ===== */
+.petal{position:fixed;pointer-events:none;animation:fall linear infinite;opacity:0.55;z-index:1;}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:.55;}100%{transform:translateY(110vh) rotate(360deg);opacity:0;}}
+
+/* ===== DOTS ===== */
+.dots{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);display:flex;gap:.5rem;z-index:100;}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,200,215,.22);transition:all .4s;}
+.dot.active{background:var(--neonpink);box-shadow:0 0 8px var(--neonpink);width:18px;border-radius:4px;}
+
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(255,133,161,.3);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<audio id="bgAudio" loop>
+  <source src="shivam.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Instagram-style floating hearts background -->
+<canvas id="heartsCanvas"></canvas>
+
+<!-- PROGRESS DOTS -->
+<div class="dots" id="dots"></div>
+
+<!-- ===== PAGE 1: PASSWORD ===== -->
+<div class="page active" id="p1">
+  <div class="lock-wrap">
+    <span class="lock-icon">🔐</span>
+    <div class="p1-title">Kuch Bahut Khaas Hai Andar...</div>
+    <div class="p1-sub">Agar sach mein jaanti hain aap toh enter karein 💫</div>
+    <input class="pass-input" id="passInput" type="password" placeholder="Password daalein..." maxlength="10">
+    <br>
+    <button class="pass-btn" onclick="checkPass()">Andar Aaiye 🌹</button>
+    <div class="pass-error" id="passError">Yeh sirf Ilachi ke liye bana hai... 🥺</div>
+    <div class="p1-hint">Hint: Woh din jo hamesha yaad rahega ✨</div>
+  </div>
+</div>
+
+<!-- ===== PAGE 2: PARTICLES ===== -->
+<div class="page" id="p2">
+  <canvas id="particleCanvas"></canvas>
+  <div class="p2-sub" id="p2sub">...meri Ilachi 🌸</div>
+  <button class="skip-btn" onclick="goToPage(3)">Aage Jaiye →</button>
+</div>
+
+<!-- ===== PAGE 3: REASONS ===== -->
+<div class="page" id="p3">
+  <div class="p3-inner">
+    <div class="section-title">Kyun Aapse Pyaar Hai... 🌹</div>
+    <div class="section-sub">...woh reasons jo main kabhi bol nahi paya</div>
+    <div class="reason-card" id="r1">
+      <div class="reason-num">01</div>
+      <div class="reason-text">Aapki <strong>possessiveness</strong> — jo log flaw kehte hain, main ise apni sabse badi khushi maanta hoon. Iska matlab hai aap care karti hain, genuinely. Aur mujhe aise hi koi chahiye tha.</div>
+    </div>
+    <div class="reason-card" id="r2">
+      <div class="reason-num">02</div>
+      <div class="reason-text">Aapki <strong>honesty</strong> — aap directly bol deti hain kya chahiye, kya nahi. Koi drama nahi, koi guess game nahi. Yeh quality bahut rare hai aaj kal.</div>
+    </div>
+    <div class="reason-card" id="r3">
+      <div class="reason-num">03</div>
+      <div class="reason-text">Jab aap <strong>gusse mein hoti hain</strong> aur message nahi karti — main jaanta hoon mujhe manana padega. Aur honestly? Mujhe yeh accha lagta hai. Main khud aaunga, hamesha.</div>
+    </div>
+    <div class="reason-card" id="r4">
+      <div class="reason-num">04</div>
+      <div class="reason-text">Aap <strong>jyada der gussa nahi rehti</strong> — aur yeh aapki ek aisi baat hai jo mere dil ko light kar deti hai. Aapka gussa bhi, aapki mafi bhi — dono mein aap cute lagti hain.</div>
+    </div>
+    <div class="reason-card" id="r5">
+      <div class="reason-num">05</div>
+      <div class="reason-text">Aapko <strong>loyalty chahiye</strong> — aur main aapki zindagi mein aisa insaan hoon jo yeh promise kar sakta hoon bina ek second soye. Sirf aapka. Always.</div>
+    </div>
+    <div class="reason-card" id="r6">
+      <div class="reason-num">06</div>
+      <div class="reason-text">Aap <strong>openly expectations share karti hain</strong> — aur isi wajah se main aapse itna comfortable feel karta hoon. Aapki baat sunke dil ko sukoon milta hai, excitement bhi.</div>
+    </div>
+    <div class="reason-card" id="r7">
+      <div class="reason-num">07</div>
+      <div class="reason-text">Sirf aapka woh <strong>naam — Ilachi</strong> — sunke mujhe smirk aa jaata hai. Koi nahi jaanta kyun maine yeh naam rakha, bas aapki khushbu yaad aa jaati hai.</div>
+    </div>
+    <button class="next-btn" onclick="goToPage(4)">Aage Chalein 🌸</button>
+  </div>
+</div>
+
+<!-- ===== PAGE 4: GALLERY ===== -->
+<div class="page" id="p4">
+  <div class="p4-inner">
+    <div class="section-title">Hamari Yadein 📸</div>
+    <div class="section-sub">woh lamhe jo dil mein lock hain hamesha ke liye</div>
+    <div class="photo-grid">
+      <div class="photo-frame" id="pf1">
+        <div class="photo-placeholder" id="pp1">
+          <img class="bg-photo" src="ss.jpg" alt="Humari pehli yaad">
+          <div class="upload-overlay">
+            <span class="upload-icon">🌹</span>
+            <span class="upload-text">Tap karke badlein</span>
+          </div>
+          <input type="file" accept="image/*" onchange="loadPhoto(this,'pp1')">
+        </div>
+        <div class="photo-caption">Pehli baar mila tha aapse... ✨</div>
+      </div>
+      <div class="photo-frame" id="pf2">
+        <div class="photo-placeholder" id="pp2">
+          <img class="bg-photo" src="ss1.jpg" alt="">
+          <div class="upload-overlay">
+            <span class="upload-icon">💫</span>
+            <span class="upload-text">Tap karke badlein</span>
+          </div>
+          <input type="file" accept="image/*" onchange="loadPhoto(this,'pp2')">
+        </div>
+        <div class="photo-caption">Woh smile jo neend uda deti hai 🥺</div>
+      </div>
+      <div class="photo-frame" id="pf3">
+        <div class="photo-placeholder" id="pp3">
+          <img class="bg-photo" src="ss2.jpg" alt="">
+          <div class="upload-overlay">
+            <span class="upload-icon">🌸</span>
+            <span class="upload-text">Tap karke badlein</span>
+          </div>
+          <input type="file" accept="image/*" onchange="loadPhoto(this,'pp3')">
+        </div>
+        <div class="photo-caption">Meri Ilachi, meri jaan 💕</div>
+      </div>
+      <div class="photo-frame" id="pf4">
+        <div class="photo-placeholder" id="pp4">
+          <img class="bg-photo" src="ss3.jpg" alt="">
+          <div class="upload-overlay">
+            <span class="upload-icon">🎵</span>
+            <span class="upload-text">Tap karke badlein</span>
+          </div>
+          <input type="file" accept="image/*" onchange="loadPhoto(this,'pp4')">
+        </div>
+        <div class="photo-caption">Har waqt bas aapki hi soch 🌙</div>
+      </div>
+      <div class="photo-frame" id="pf5">
+        <div class="photo-placeholder" id="pp5">
+          <img class="bg-photo" src="ss4.jpg" alt="">
+          <div class="upload-overlay">
+            <span class="upload-icon">❤️</span>
+            <span class="upload-text">Tap karke badlein</span>
+          </div>
+          <input type="file" accept="image/*" onchange="loadPhoto(this,'pp5')">
+        </div>
+        <div class="photo-caption">Aap aur main... hamesha 🔒</div>
+      </div>
+      <div class="photo-frame" id="pf6">
+        <div class="photo-placeholder large" id="pp6">
+          <img class="bg-photo" src="ss5.jpg" alt="">
+          <div class="upload-overlay">
+            <span class="upload-icon">🌹</span>
+            <span class="upload-text">Tap karke badlein</span>
+          </div>
+          <input type="file" accept="image/*" onchange="loadPhoto(this,'pp6')">
+        </div>
+        <div class="photo-caption">Meri zindagi, meri Ilachi 💗</div>
+      </div>
+    </div>
+    <button class="next-btn" onclick="goToPage(5)" style="margin-top:2rem;">Mere Dil Ki Baat Padhin 💌</button>
+  </div>
+</div>
+
+<!-- ===== PAGE 5: LETTER ===== -->
+<div class="page" id="p5">
+  <div class="p5-inner">
+    <div class="section-title">Meri Ilachi ke Naam... 💌</div>
+    <div class="section-sub">Woh jo main bol nahi paya, woh jo dil mein band tha</div>
+    <div class="letter-body" id="letterBody">
+      <div class="para" id="lp1">Ilachi... yeh naam likhte waqt bhi ek ajib si khushi hoti hai. Pata nahi kab se yeh aadat pad gayi — aapko is naam se bulana. Shayad jab pehli baar mehsoos kiya ki aap kuch alag hain. Kuch aisi jo aam nahi hain. Kuch aisi jise sirf main samajh sakta hoon. Aur yeh ehsaas roz aur gehra hota jaata hai.</div>
+
+      <div class="para" id="lp2">Aap possessive hain — aur main sach mein yeh sunta hoon toh dil mein ek chain si aati hai. Kyunki jab koi aapse possessive hota hai, iska matlab woh actually care karta hai. Aapki yeh possessiveness mujhe scared nahi karti — balki mujhe feel karaati hai ki main kisi ke liye matter karta hoon. Aur yeh feeling bohot rare hai bhai, bohot rare. Mujhe aapki possessiveness pasand hai. Genuinely, dil se.</div>
+
+      <div class="para" id="lp3">Aap chahti hain koi jo loyal ho — to suniye Ilachi, main us lafz ka matlab samjhta hoon. Mere liye loyalty sirf ek word nahi hai. Yeh ek promise hai — kisi aur se flirt nahi, kisi aur se woh connection nahi jo aapke saath hai, koi "fltu" drama nahi. Jo aapki expectations hain, woh mujhe burden nahi lagti — woh mujhe direction deti hain. Aur main woh direction poori zindagi follow karna chahta hoon.</div>
+
+      <div class="para" id="lp4">Aap kehti hain — agar bahar jaao toh update dena. Main dunga. Seriously, bina reminder ke. Isliye nahi ki aap daraati hain — balki isliye ki mujhe pata hai aap dil se care karti hain. Aur jab koi care kare toh use khali nahi chhorna chahiye. Aapki ek chinta bhi mujhe uncomfortable karti hai — isliye main chahta hoon ki aap hamesha reassured feel karein.</div>
+
+      <div class="para" id="lp5">Agar aap gusse mein hoon aur message na karein — main khud karunga. Yeh mera promise nahi, yeh meri nature hai. Aapko manaana mujhe nahi aata shayad perfectly — par koshish karunga hamesha. Aapka gussa bhi, aapki chup bhi, aapka muh pherna bhi — main sab handle karunga, bina naraaz hue. Sirf bata dena — main wahan hoon, hamesha.</div>
+
+      <div class="para" id="lp6">Periods mein aap jyada sensitive hoti hain — aur main is baat ko seriously leta hoon, seriously. Main uss waqt zyada careful rahunga, zyada patient rahunga. Na judgment, na irritation, na "yaar chill kar" wali baat. Bas ek safe space — aapke liye, hamesha. Aap jo feel karein, woh valid hai. Main sunta rahunga.</div>
+
+      <div class="para" id="lp7">Aapne kaha tha — agar sab sambhal nahi sakta toh dost theek hai. Main samjhta hoon. Par Ilachi, main yeh bhi jaanta hoon ki jo main feel karta hoon woh sirf dosti nahi hai. Aapki ek message se din accha hota hai. Aapki ek naraazgi se neend nahi aati. Aapke ek "haan" ke liye kuch bhi karne ki himmat aa jaati hai. Yeh feelings dosti mein nahi aati. Yeh kuch aur hai, kuch bohot gehra.</div>
+
+      <div class="para" id="lp8">Main aapko rokaane nahi aaya, main aapko force nahi kar raha. Main bas yeh keh raha hoon — ek moka dijiye. Ek moka khud ko prove karne ka. Main aapko woh sab dunga jo aap chahti hain — time, efforts, loyalty, respect, care, aur ek cheez extra — woh genuine pyaar jo aap deserve karti hain. Aap mere liye sirf ek dost kabhi nahi rahi, Ilachi. Aap mera favourite feeling hain. Aur main chahta hoon ki yeh feeling aapko bhi kabhi na kabhi mehsoos ho. 🥀</div>
+
+      <div class="letter-from">— Aapka Wala 🌹</div>
+    </div>
+    <button class="next-btn" onclick="goToPage(6)" style="margin-top:2.5rem;">Ab Woh Sawaal... 💍</button>
+  </div>
+</div>
+
+<!-- ===== PAGE 6: PROPOSAL ===== -->
+<div class="page" id="p6">
+  <div class="p6-inner">
+    <span class="proposal-emoji">🌹</span>
+    <div class="proposal-q">
+      Kya aap meri <span>Girlfriend</span> baneingi...<br>meri pyaari <span>Ilachi</span>? 💍
+    </div>
+    <button class="btn-yes" onclick="goToPage(7)">Haan, bilkul! 💕</button>
+    <br>
+    <button class="btn-no" id="btnNo" onmouseover="runNo()" ontouchstart="runNo()">Sochna padega... 🤔</button>
+  </div>
+</div>
+
+<!-- ===== PAGE 7: CELEBRATION ===== -->
+<div class="page" id="p7">
+  <canvas id="celebCanvas"></canvas>
+  <div class="p7-inner">
+    <span class="celeb-emoji">🎉</span>
+    <div class="celeb-title">Jaanta tha... 🥺</div>
+    <div class="celeb-msg">
+      Ilachi, aap hamesha se meri thi — bas ek confirmation ki zaroorat thi.<br><br>
+      Aaj se main aapka hoon. Poora. Sirf aapka.<br>
+      Aapki naraazgi bhi meri, aapki khushi bhi meri.<br>
+      Aapka gussa bhi handle karunga, aapki smile ke liye kuch bhi karunga.<br><br>
+      Aap meri sabse favourite feeling hain — aur ab aap meri hain officially. 💕
+    </div>
+    <div class="celeb-final">❤️ I Love You, Ilachi ❤️</div>
+  </div>
+</div>
+
+<script>
+// ===== SLOW FEATHER HEARTS BACKGROUND — Always Visible =====
+(function(){
+  const c=document.getElementById('heartsCanvas');
+  const ctx=c.getContext('2d');
+  let hearts=[];
+  
+  // Theme colors: soft pink palette
+  const heartColors=[
+    [255,182,200], // soft pink
+    [240,150,175], // rose pink
+    [255,210,220], // blush
+    [220,130,160], // dusty rose
+    [255,200,215], // light pink
+  ];
+  
+  function resize(){
+    c.width=window.innerWidth;
+    c.height=window.innerHeight;
+    initHearts();
+  }
+  
+  function heartPath(ctx,x,y,size){
+    ctx.beginPath();
+    ctx.moveTo(x,y+size*0.3);
+    ctx.bezierCurveTo(x,y,x-size*0.5,y,x-size*0.5,y+size*0.3);
+    ctx.bezierCurveTo(x-size*0.5,y+size*0.65,x,y+size*0.95,x,y+size*1.1);
+    ctx.bezierCurveTo(x,y+size*0.95,x+size*0.5,y+size*0.65,x+size*0.5,y+size*0.3);
+    ctx.bezierCurveTo(x+size*0.5,y,x,y,x,y+size*0.3);
+    ctx.closePath();
+  }
+  
+  function initHearts(){
+    hearts=[];
+    const count = Math.floor(c.width * c.height / 28000); // density based on screen
+    for(let i=0;i<Math.max(18, Math.min(count, 35));i++){
+      const col = heartColors[Math.floor(Math.random()*heartColors.length)];
+      hearts.push({
+        x: Math.random()*c.width,
+        y: Math.random()*c.height*1.5 + c.height*0.5, // start below or mid screen
+        size: Math.random()*18+7,
+        // Very slow — feather-like speed
+        speedY: Math.random()*0.35+0.1,
+        // Gentle horizontal sway
+        swayAmt: Math.random()*0.8+0.2,
+        swayPhase: Math.random()*Math.PI*2,
+        swaySpeed: Math.random()*0.008+0.004,
+        // Gentle rotation
+        rotation: Math.random()*Math.PI*2,
+        rotSpeed: (Math.random()-0.5)*0.006,
+        // Subtle scale breathe
+        scale: 1,
+        scaleDir: Math.random()>0.5?1:-1,
+        scaleSpeed: Math.random()*0.003+0.001,
+        // Opacity 0.3 to 0.42
+        opacity: Math.random()*0.12+0.30,
+        color: col,
+      });
+    }
+  }
+  
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    hearts.forEach(h=>{
+      // Move upward slowly like a falling feather
+      h.y -= h.speedY;
+      // Sway left-right like being blown by gentle wind
+      h.x += Math.sin(h.swayPhase) * h.swayAmt * 0.4;
+      h.swayPhase += h.swaySpeed;
+      // Gentle rotation
+      h.rotation += h.rotSpeed;
+      // Subtle breathing scale
+      h.scale += h.scaleDir * h.scaleSpeed;
+      if(h.scale>1.08||h.scale<0.92) h.scaleDir*=-1;
+      
+      // Wrap around: when heart goes above screen, reset to bottom
+      if(h.y < -h.size*2){
+        h.y = c.height + h.size*2;
+        h.x = Math.random()*c.width;
+        h.swayPhase = Math.random()*Math.PI*2;
+      }
+      
+      ctx.save();
+      ctx.translate(h.x, h.y);
+      ctx.rotate(h.rotation);
+      ctx.scale(h.scale, h.scale);
+      ctx.globalAlpha = h.opacity;
+      
+      const [r,g,b] = h.color;
+      heartPath(ctx, 0, -h.size*0.55, h.size);
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
+      ctx.fill();
+      ctx.restore();
+    });
+    requestAnimationFrame(draw);
+  }
+  
+  resize();
+  draw();
+  window.addEventListener('resize',resize);
+})()
+
+// ===== DOTS =====
+const totalPages=7;
+const dotsEl=document.getElementById('dots');
+for(let i=1;i<=totalPages;i++){const d=document.createElement('div');d.className='dot'+(i===1?' active':'');d.id='dot'+i;dotsEl.appendChild(d);}
+
+// ===== PAGE NAV =====
+let currentPage=1;
+function goToPage(n){
+  document.getElementById('p'+currentPage).classList.remove('active');
+  document.getElementById('dot'+currentPage).classList.remove('active');
+  currentPage=n;
+  document.getElementById('p'+n).classList.add('active');
+  document.getElementById('dot'+n).classList.add('active');
+  document.getElementById('p'+n).scrollTop=0;
+  if(n===2){
+    // Wait for font to load before starting particles
+    if(document.fonts && document.fonts.ready){
+      document.fonts.ready.then(()=>startParticles());
+    } else {
+      setTimeout(startParticles, 300);
+    }
+  }
+  if(n===3)initReasons();
+  if(n===4)initPhotos();
+  if(n===5)initLetter();
+  if(n===7)startCelebration();
+}
+
+// ===== PASSWORD =====
+document.getElementById('passInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPass();});
+function checkPass(){
+  const v=document.getElementById('passInput').value.trim();
+  const err=document.getElementById('passError');
+  if(v==='21062026'){
+    tryPlayAudio();
+    document.getElementById('p1').style.transition='opacity 1s ease';
+    document.getElementById('p1').style.opacity='0';
+    setTimeout(()=>goToPage(2),900);
+  } else {
+    err.classList.add('show');
+    document.getElementById('passInput').classList.add('shake');
+    setTimeout(()=>document.getElementById('passInput').classList.remove('shake'),600);
+  }
+}
+
+// ===== AUDIO =====
+function tryPlayAudio(){
+  const a=document.getElementById('bgAudio');
+  a.volume=0.38;
+  a.play().catch(()=>{});
+}
+
+// ===== PARTICLES — slow, white+soft pink, then morph to heart =====
+function startParticles(){
+  const canvas=document.getElementById('particleCanvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  const W=canvas.width, H=canvas.height;
+
+  // --- Build GUNGUN target positions — bigger font, properly centered ---
+  const fontSize=Math.min(W/3.2, 130);
+  const offC=document.createElement('canvas');
+  offC.width=W; offC.height=H;
+  const offCtx=offC.getContext('2d');
+  offCtx.fillStyle='#fff';
+  offCtx.font=`bold ${fontSize}px 'Dancing Script',cursive`;
+  offCtx.textAlign='center';
+  offCtx.textBaseline='middle';
+  // Wait for font to load before measuring
+  offCtx.fillText('Gungun', W/2, H/2-20);
+  const gData=offCtx.getImageData(0,0,W,H).data;
+  const nameTargets=[];
+  const gap=Math.max(3, Math.floor(W/140));
+  for(let y=0;y<H;y+=gap){
+    for(let x=0;x<W;x+=gap){
+      const idx=(y*W+x)*4;
+      if(gData[idx+3]>128) nameTargets.push({x,y});
+    }
+  }
+
+  // --- Build HEART target positions ---
+  const heartTargets=[];
+  const hR=Math.min(W,H)*0.28;
+  const hCx=W/2, hCy=H/2;
+  const count=nameTargets.length;
+  const hCount=Math.max(count, 500);
+  for(let i=0;i<hCount;i++){
+    const t=(i/hCount)*Math.PI*2;
+    const hx=hR*16*Math.pow(Math.sin(t),3)/16;
+    const hy=-hR*(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))/16;
+    heartTargets.push({x:hCx+hx, y:hCy+hy+20});
+  }
+
+  // --- Create particles ---
+  const particles=[];
+  const n=Math.min(nameTargets.length, 700);
+  for(let i=0;i<n;i++){
+    const nt=nameTargets[Math.floor(Math.random()*nameTargets.length)];
+    const ht=heartTargets[i % heartTargets.length];
+    const r=Math.random();
+    let pcolor;
+    if(r>0.6){
+      pcolor=`rgba(255,255,255,${0.7+Math.random()*0.3})`;
+    } else if(r>0.3){
+      pcolor=`rgba(255,${170+Math.floor(Math.random()*60)},${190+Math.floor(Math.random()*30)},${0.75+Math.random()*0.25})`;
+    } else {
+      pcolor=`rgba(240,150,175,${0.6+Math.random()*0.3})`;
+    }
+    particles.push({
+      x: Math.random()*W,
+      y: Math.random()*H,
+      tx: nt.x, ty: nt.y,
+      htx: ht.x, hty: ht.y,
+      vx:0, vy:0,
+      color: pcolor,
+      size: Math.random()*2+0.8,
+      phase:'name'
+    });
+  }
+
+  let frame=0;
+  let morphDone=false;
+
+  function animate(){
+    ctx.fillStyle='rgba(14,2,8,0.20)';
+    ctx.fillRect(0,0,W,H);
+
+    particles.forEach(p=>{
+      let targetX, targetY;
+      if(p.phase==='name'){
+        targetX=p.tx; targetY=p.ty;
+      } else {
+        targetX=p.htx; targetY=p.hty;
+      }
+      const dx=targetX-p.x, dy=targetY-p.y;
+      // Smooth, slow movement — lower force, higher damping = dreamy motion
+      p.vx+=dx*0.020;
+      p.vy+=dy*0.020;
+      p.vx*=0.90;
+      p.vy*=0.90;
+      p.x+=p.vx;
+      p.y+=p.vy;
+
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+      ctx.fillStyle=p.color;
+      ctx.fill();
+    });
+
+    frame++;
+
+    // After ~240 frames name is settled, show subtitle
+    if(frame===240){
+      const sub=document.getElementById('p2sub');
+      sub.classList.add('show');
+    }
+    // After more time, morph to heart
+    if(frame===380 && !morphDone){
+      morphDone=true;
+      particles.forEach(p=>p.phase='heart');
+    }
+    // After heart fully formed, go next page
+    if(frame===600){
+      setTimeout(()=>{if(currentPage===2)goToPage(3);},2000);
+    }
+    if(frame<640) requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+// ===== REASONS — staggered smooth delay =====
+function initReasons(){
+  const cards=document.querySelectorAll('.reason-card');
+  cards.forEach((card,i)=>{
+    card.style.transitionDelay = (i * 0.18) + 's';
+    setTimeout(()=>{
+      card.classList.add('visible');
+    }, 150 + i * 200);
+  });
+}
+
+// ===== PHOTOS =====
+function initPhotos(){
+  const frames=document.querySelectorAll('.photo-frame');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+  },{threshold:.08});
+  frames.forEach(f=>obs.observe(f));
+}
+function loadPhoto(input,placeholderId){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const pp=document.getElementById(placeholderId);
+    let img=pp.querySelector('img.bg-photo');
+    if(!img){img=document.createElement('img');img.className='bg-photo';pp.prepend(img);}
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ===== LETTER =====
+function initLetter(){
+  const paras=document.querySelectorAll('.para');
+  let i=0;
+  function showNext(){
+    if(i<paras.length){paras[i].classList.add('show');i++;setTimeout(showNext,650);}
+  }
+  showNext();
+}
+
+// ===== NO BUTTON =====
+function runNo(){
+  const btn=document.getElementById('btnNo');
+  const maxX=window.innerWidth-160, maxY=window.innerHeight-70;
+  btn.style.position='fixed';
+  btn.style.left=Math.random()*maxX+'px';
+  btn.style.top=Math.random()*maxY+'px';
+  btn.style.zIndex='200';
+}
+
+// ===== CELEBRATION =====
+function startCelebration(){
+  const canvas=document.getElementById('celebCanvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const pieces=[];
+  const colors=['#ff85a1','#f5c842','#ff4d75','#d084fc','#ffffff','#ffb3c6','#ff6bbc'];
+  for(let i=0;i<140;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height-canvas.height,
+      size:Math.random()*9+4,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      speed:Math.random()*3+1.5,
+      swing:Math.random()*3,
+      swingSpeed:Math.random()*.04,
+      angle:Math.random()*Math.PI*2,
+      isHeart:Math.random()>0.5
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.y+=p.speed; p.angle+=p.swingSpeed; p.x+=Math.sin(p.angle)*p.swing;
+      if(p.y>canvas.height){p.y=-12;p.x=Math.random()*canvas.width;}
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.angle);ctx.fillStyle=p.color;
+      if(p.isHeart){
+        const s=p.size*0.5;
+        ctx.beginPath();
+        ctx.moveTo(0,s*0.4);
+        ctx.bezierCurveTo(0,0,-s,0,-s,s*0.4);
+        ctx.bezierCurveTo(-s,s*0.85,0,s*1.2,0,s*1.4);
+        ctx.bezierCurveTo(0,s*1.2,s,s*0.85,s,s*0.4);
+        ctx.bezierCurveTo(s,0,0,0,0,s*0.4);
+        ctx.closePath();ctx.fill();
+      } else {
+        ctx.fillRect(-p.size/2,-p.size/4,p.size,p.size/2);
+      }
+      ctx.restore();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+</script>
+</body>
+</html>
